@@ -32,7 +32,7 @@ body {
 
 /* Contenido (deja espacio para el menú inferior fijo) */
 .contenido {
-  flex: 1; width: 100%; max-width: 980px; margin: 0 auto;
+  flex: 1; width: 100%; max-width: 980px; margin: 0 auto !important;
   padding: 20px 16px 100px;
 }
 .titulo { margin: 0 0 16px; color: var(--verde-oscuro); }
@@ -68,7 +68,7 @@ body {
 /* Filtros y formularios */
 .filtros, .formulario { display: flex; flex-wrap: wrap; gap: 10px; }
 .filtros { margin-bottom: 14px; }
-input, select {
+.filtros input, .filtros select, .formulario input, .formulario select {
   padding: 10px 12px; border: 1px solid var(--borde); border-radius: 8px;
   font-size: .95rem; background: #fff; color: var(--texto);
 }
@@ -86,10 +86,10 @@ input:focus, select:focus, button:focus-visible { outline: 2px solid var(--verde
 
 /* Tabla */
 .tabla-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--borde); border-radius: 12px; }
-table { width: 100%; border-collapse: collapse; min-width: 640px; }
-th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--borde); font-size: .92rem; }
-th { background: var(--verde-claro); color: var(--verde-oscuro); }
-tbody tr:last-child td { border-bottom: none; }
+.tabla-wrap table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.tabla-wrap th, .tabla-wrap td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--borde); font-size: .92rem; }
+.tabla-wrap th { background: var(--verde-claro); color: var(--verde-oscuro); }
+.tabla-wrap tbody tr:last-child td { border-bottom: none; }
 td.vacio { text-align: center; color: var(--gris); padding: 24px; }
 
 .stock-ctrl { display: inline-flex; align-items: center; gap: 8px; }
@@ -131,4 +131,21 @@ td.vacio { text-align: center; color: var(--gris); padding: 24px; }
 @media (max-width: 480px) {
   .nav-item { font-size: .68rem; }
   .contenido { padding-bottom: 96px; }
+}
+
+/* Escritorio: el menú deja de ir fijo abajo y pasa a ser una barra horizontal bajo el encabezado */
+@media (min-width: 768px) {
+  .app { display: flex; flex-direction: column; }
+  .header { order: 0; }
+  .bottom-nav {
+    order: 1; position: static; justify-content: center; gap: 8px;
+    box-shadow: none; border-top: none; border-bottom: 1px solid var(--borde);
+  }
+  .navbar { order: 2; }
+  .contenido { order: 3; padding-bottom: 32px; }
+  .nav-item {
+    flex: 0 0 auto; flex-direction: row; gap: 8px; padding: 12px 18px; font-size: .95rem;
+    border-top: none; border-bottom: 3px solid transparent;
+  }
+  .nav-item.activo { border-bottom-color: var(--verde); }
 }
