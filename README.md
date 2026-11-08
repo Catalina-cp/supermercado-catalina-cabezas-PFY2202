@@ -67,3 +67,7 @@ src/
 ├── main.jsx
 └── index.css
 ```
+
+## Sitio publicado
+
+https://catalina-cp.github.io/supermercado-catalina-cabezas-PFY2202/
