@@ -1,17 +1,17 @@
 import TarjetaResumen from './TarjetaResumen.jsx'
 import { formatoPeso, STOCK_BAJO } from '../../utils/formato.js'
 
-export default function ResumenInventario({ productos }) {
+export default function ResumenInventario({ articulos }) {
   const tarjetas = [
-    { etiqueta: 'Productos', valor: productos.length },
-    { etiqueta: 'Unidades en stock', valor: productos.reduce((s, p) => s + p.stock, 0) },
+    { etiqueta: 'Productos', valor: articulos.length },
+    { etiqueta: 'Unidades en stock', valor: articulos.reduce((s, a) => s + a.stock, 0) },
     {
       etiqueta: 'Valor del inventario',
-      valor: formatoPeso(productos.reduce((s, p) => s + p.stock * p.precio, 0)),
+      valor: formatoPeso(articulos.reduce((s, a) => s + a.stock * a.precio, 0)),
     },
     {
       etiqueta: 'Alertas de stock',
-      valor: productos.filter((p) => p.stock <= STOCK_BAJO).length,
+      valor: articulos.filter((a) => a.stock <= STOCK_BAJO).length,
       alerta: true,
     },
   ]

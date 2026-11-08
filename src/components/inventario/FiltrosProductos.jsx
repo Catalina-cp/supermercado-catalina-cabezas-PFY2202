@@ -1,4 +1,4 @@
-import { categorias } from '../../data/productos.js'
+import { TIPOS_PRODUCTO } from '../../models/articulo.js'
 
 export default function FiltrosProductos({ busqueda, onBusqueda, filtro, onFiltro }) {
   return (
@@ -12,8 +12,8 @@ export default function FiltrosProductos({ busqueda, onBusqueda, filtro, onFiltr
       />
       <select value={filtro} onChange={(e) => onFiltro(e.target.value)} aria-label="Filtrar por categoría">
         <option>Todas</option>
-        {categorias.map((c) => (
-          <option key={c}>{c}</option>
+        {TIPOS_PRODUCTO.map((t) => (
+          <option key={t}>{t}</option>
         ))}
       </select>
     </div>

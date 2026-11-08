@@ -1,22 +1,39 @@
 # Supermercado – Gestión de Inventario
 
-Actividad formativa 1, Semana 1 – Desarrollo Frontend II (PFY2202).
-
-Sitio web de gestión de inventario para un supermercado, desarrollado con **React**, **JavaScript**, **HTML** y **CSS**, usando **React Router** para la navegación entre pantallas.
+Actividades formativas de Desarrollo Frontend II (PFY2202). Sitio de gestión de inventario de un supermercado hecho con **React**, **React Router** (`react-router`), **Bootstrap 5** y JavaScript.
 
 ## Páginas
 
 | Ruta | Página | Descripción |
 |------|--------|-------------|
-| `/` | Inicio | Panel de inventario: resumen, búsqueda, filtro por categoría, control de stock y alta/baja de productos |
-| `/quienes-somos` | Quiénes somos | Misión, visión, valores e historia del supermercado |
-| `/preguntas-frecuentes` | Preguntas frecuentes | Preguntas y respuestas desplegables sobre el uso del sistema |
+| `/` | Inicio | Panel de inventario: resumen, búsqueda, filtro, ajuste de stock, alta y baja de artículos |
+| `/quienes-somos` | Quiénes somos | Misión, visión, valores e historia |
+| `/preguntas-frecuentes` | Preguntas frecuentes | Preguntas y respuestas desplegables |
+| `/agregar-articulo` | Agregar artículo | Formulario con validación para ingresar artículos al inventario |
+| `/articulos` | Listado de artículos | Tabla de artículos con **filtro por categoría** |
+| `/articulos/:id` | Detalle del artículo | Datos del artículo y botón **Agregar al carrito** |
+| `/carrito` | Carrito de compras | Lista del carrito, aumentar/disminuir cantidades, total |
+| `*` | Página no encontrada | Ruta inexistente |
 
-La navegación se realiza desde un **menú inferior** fijo, configurado con React Router (`HashRouter`, `Routes`, `Route` y `NavLink`).
+## Estado global (`src/context/InventarioContext.jsx`)
 
-## Requisitos
+Context API + `useReducer`. Un único estado compartido por todas las pantallas:
 
-- Node.js 18 o superior
+- `articulos`: inventario completo (cada artículo con su `stock` disponible).
+- `carrito`: lista de `{ id, cantidad }`.
+
+Reglas:
+
+- **Filtrar** por categoría solo cambia lo que se muestra; el inventario original no se modifica.
+- **Agregar al carrito** resta 1 unidad del stock del inventario (solo si hay stock).
+- En el **carrito**, `+` resta del inventario y `−` devuelve al inventario. Si la cantidad llega a 0, el artículo sale del carrito.
+- **Quitar** y **Vaciar carrito** devuelven las unidades al inventario.
+- Eliminar un artículo del inventario también lo saca del carrito.
+
+## Contrato de artículo (`src/models/articulo.js`)
+
+Obligatorios: `id` (UUID), `nombre`, `marca`, `tipo`, `precio`, `stock`. Opcional: `descripcion`.
+La validación (con expresiones regulares y largos) está en `src/utils/validacion.js`.
 
 ## Cómo ejecutarlo
 
@@ -25,7 +42,7 @@ npm install
 npm run dev
 ```
 
-Luego abre la URL que muestra la terminal (normalmente http://localhost:5173).
+Requiere Node.js 20 o superior (por `react-router` v7).
 
 ## Build de producción
 
@@ -38,13 +55,14 @@ npm run preview
 
 ```
 src/
-├── components/
-│   ├── Header.jsx
-│   └── BottomNav.jsx
-├── pages/
-│   ├── Home.jsx
-│   ├── QuienesSomos.jsx
-│   └── PreguntasFrecuentes.jsx
+├── components/        Header, TopMenu, BottomNav
+│   └── inventario/    ResumenInventario, TarjetaResumen, FiltrosProductos, TablaProductos, FormularioArticulo
+├── context/           InventarioContext.jsx (estado global)
+├── data/              productos.js (inventario inicial)
+├── models/            articulo.js (contrato del artículo)
+├── pages/             Home, QuienesSomos, PreguntasFrecuentes, AgregarArticulo,
+│                      ListaArticulos, DetalleArticulo, Carrito, NotFound
+├── utils/             formato.js, validacion.js, confirmar.js
 ├── App.jsx
 ├── main.jsx
 └── index.css

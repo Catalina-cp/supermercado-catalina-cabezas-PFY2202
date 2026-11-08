@@ -1,12 +1,14 @@
+import { Link } from 'react-router'
 import { formatoPeso, estadoStock } from '../../utils/formato.js'
 
-export default function TablaProductos({ productos, onCambiarStock, onEliminar }) {
+export default function TablaProductos({ articulos, onCambiarStock, onEliminar }) {
   return (
     <div className="tabla-wrap">
       <table>
         <thead>
           <tr>
             <th>Producto</th>
+            <th>Marca</th>
             <th>Categoría</th>
             <th>Precio</th>
             <th>Stock</th>
@@ -15,28 +17,29 @@ export default function TablaProductos({ productos, onCambiarStock, onEliminar }
           </tr>
         </thead>
         <tbody>
-          {productos.length === 0 && (
+          {articulos.length === 0 && (
             <tr>
-              <td colSpan="6" className="vacio">No hay productos que coincidan.</td>
+              <td colSpan="7" className="vacio">No hay productos que coincidan.</td>
             </tr>
           )}
-          {productos.map((p) => {
-            const est = estadoStock(p.stock)
+          {articulos.map((a) => {
+            const est = estadoStock(a.stock)
             return (
-              <tr key={p.id}>
-                <td>{p.nombre}</td>
-                <td>{p.categoria}</td>
-                <td>{formatoPeso(p.precio)}</td>
+              <tr key={a.id}>
+                <td><Link to={`/articulos/${a.id}`}>{a.nombre}</Link></td>
+                <td>{a.marca}</td>
+                <td>{a.tipo}</td>
+                <td>{formatoPeso(a.precio)}</td>
                 <td>
                   <div className="stock-ctrl">
-                    <button onClick={() => onCambiarStock(p.id, -1)} aria-label={`Restar una unidad de ${p.nombre}`}>−</button>
-                    <strong>{p.stock}</strong>
-                    <button onClick={() => onCambiarStock(p.id, 1)} aria-label={`Sumar una unidad de ${p.nombre}`}>+</button>
+                    <button onClick={() => onCambiarStock(a.id, -1)} aria-label={`Restar una unidad de ${a.nombre}`}>−</button>
+                    <strong>{a.stock}</strong>
+                    <button onClick={() => onCambiarStock(a.id, 1)} aria-label={`Sumar una unidad de ${a.nombre}`}>+</button>
                   </div>
                 </td>
                 <td><span className={`badge ${est.clase}`}>{est.texto}</span></td>
                 <td>
-                  <button className="btn-eliminar" onClick={() => onEliminar(p.id)}>Eliminar</button>
+                  <button className="btn-eliminar" onClick={() => onEliminar(a)}>Eliminar</button>
                 </td>
               </tr>
             )
